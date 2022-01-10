@@ -2,6 +2,7 @@ class PuzzleTile{
     static __counter = 0;
     constructor({i, j, type, value, data}){
         this.__id = PuzzleTile.__counter++;
+        this.correctPosition = {i, j};
         this.position = {i, j};
         this.value = value || ''
         this.data = data;
@@ -54,7 +55,7 @@ class PuzzleBoard{
         this.tiles[origin.i][origin.j] = this.emptyTile;
         this.emptyTile.position = origin;
 
-        callback?.({row: this.getRow(dest.i), column: this.getColumn(dest.j)})
+        callback?.({row: this.getRow(dest.i), column: this.getColumn(dest.j), tile})
     }
     moveInDirection(direction, callback){
         let curr;
@@ -91,14 +92,13 @@ class PuzzleBoard{
                 this.moveInDirection('down', callback)
         }
     }
-
     // Remove
     removeColumn(j){
         for(let row of this.tiles){
             row[j] = undefined;
         }
     }
-    removeRow(i, gravity){
+    removeRow(i){
         while(i > 0){
             for(let j = 0; j < this.size; j++){
                 this.tiles[i][j] = this.tiles[i-1][j];
@@ -119,8 +119,7 @@ class PuzzleBoard{
             this.tiles[i][j] = new PuzzleTile({i, j, value: PuzzleTile.__counter})
         })
     }
-
-
+    // Shuffle k times
     shuffle(k = 10){
         for(let i = 0; i < k; i++){
             this.moveInDirection(['up', 'down', 'left', 'right'][ Math.floor(Math.random()*4) ])

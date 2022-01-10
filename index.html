@@ -7,6 +7,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Puzzle</title>
     <style>
+        body{
+            display: flex;
+            align-items: stretch;
+        }
+        aside{
+            background-color: whitesmoke;
+            flex-basis: 20vw;
+            padding: 16px;
+        }
+        main{
+            flex: 1;
+            padding: 16px;
+        }
+
         #board {
             height: 400px;
             width: 400px;
@@ -14,6 +28,7 @@
             border: 4px solid #303030;
             border-radius: 4px;
             position: relative;
+            /* transform: rotateX(60deg) rotateY(0deg) rotateZ(-45deg); */
         }
 
         #board>div {
@@ -23,6 +38,13 @@
             color: white;
             position: absolute;
             transition: 0.5s ease-in-out;
+            font-size: 2em;
+        }
+
+        #board>div>span{
+            display: block;
+            height: 100%;
+            width: 100%;
         }
 
         #board>div:empty {
@@ -33,41 +55,67 @@
 </head>
 
 <body>
-    <h1>Puzzle</h1>
-    <p>Try ligning up the colors!</p>
-    <div id="board">
-    </div>
-    <span style="font-size: xx-large;" id="score"></span>
+    <aside>
+        <h1>Puzzle</h1>
+        <p>Try ligning up the colors!</p>
+        <select>
+            <option value="classic">Classic</option>
+            <option value="rowsncolumns">Rows & columns</option>
+        </select>
+    </aside>
+    <main>
+        <span style="font-size: xx-large;" id="score"></span>
+        <div id="board"></div>
+    </main>
+
+
 
     <script src="./index.js"></script>
     <script>
         const board = new PuzzleBoard(5);
+        board.shuffle();
+        const rules = {
+            'classic': ({row, column, tile}) => {
+                let solved = true;
+                for(let tile of board.getTiles()){
+                    if(tile.position.i != tile.correctPosition.i) return;
+                    if(tile.position.j != tile.correctPosition.j) return;
+                }
+                alert("Solved!");
+                board.shuffle();
+                reset();
+                score++;
+            },
+            'rowsncolumns': ({row, column, tile}) => {
+                if(new Set(row.map(c => c?.type)).size == 1){
+                    board.removeRow(tile.position.i);
+                    board.refillRow(0);
+                    reset();
+                    score++;
+                }
+                if(new Set(column.map(c => c?.type)).size == 1){
+                    board.removeColumn(tile.position.j);
+                    board.refillColumn(tile.position.j);
+                    reset();
+                    score++;
+                }
+            }
+        }
+
         const boardContainer = document.querySelector('#board');
         let score = 0;
         function createTile(tile) {
             if(tile == undefined) return;
             const div = document.createElement('div');
             div.id = tile.__id;
-            div.innerHTML = tile.value;
+            div.innerHTML = `<span>${tile.value}</span>`;
             div.style.background = tile.type;
             div.style.height = 100 / board.size + '%'
             div.style.width = 100 / board.size + '%'
+            div.style.top = 0;
             boardContainer.append(div);
             div.addEventListener('click', () => {
-                board.movePosition(tile.position.i, tile.position.j, ({ row, column }) => {
-                    if (new Set(row.map(c => c?.type)).size == 1) {
-                        board.removeRow(tile.position.i, true);
-                        board.refillRow(0);
-                        reset();
-                        score++;
-                    }
-                    if (new Set(column.map(c => c?.type)).size == 1) {
-                        board.removeColumn(tile.position.j);
-                        board.refillColumn(tile.position.j);
-                        reset();
-                        score++;
-                    }
-                });
+                board.movePosition(tile.position.i, tile.position.j, rules[ document.querySelector('select').value ])
                 update();
             })
             return div
