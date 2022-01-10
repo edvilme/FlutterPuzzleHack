@@ -99,14 +99,27 @@ class PuzzleBoard{
         }
     }
     removeRow(i, gravity){
-        this.tiles[i] = new Array(this.size).fill(undefined)
+        while(i > 0){
+            for(let j = 0; j < this.size; j++){
+                this.tiles[i][j] = this.tiles[i-1][j];
+                this.tiles[i][j].position = {i, j};
+            }
+            i--;
+        }
+        this.tiles[0] = new Array(this.size).fill(undefined)
     }
     // Refill
     refillColumn(j){
         this.tiles.forEach((row, i) => {
-            row[j] = new PuzzleTile({i, j})
+            row[j] = new PuzzleTile({i, j, value: PuzzleTile.__counter})
         })
     }
+    refillRow(i){
+        this.tiles[i].forEach((cell, j) => {
+            this.tiles[i][j] = new PuzzleTile({i, j, value: PuzzleTile.__counter})
+        })
+    }
+
 
     shuffle(k = 10){
         for(let i = 0; i < k; i++){
