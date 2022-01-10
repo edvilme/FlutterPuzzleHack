@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Puzzle</title>
     <style>
-        #board{
+        #board {
             height: 400px;
             width: 400px;
             background: #303030;
@@ -14,21 +15,23 @@
             border-radius: 4px;
             position: relative;
         }
-        #board>div{
+
+        #board>div {
             box-sizing: border-box;
             border: 1px solid #303030;
-            height: 25%;
-            width: 25%;
             background-color: black;
             color: white;
             position: absolute;
             transition: 0.5s ease-in-out;
         }
-        #board>div:empty{
+
+        #board>div:empty {
             background: transparent;
+            border: 1px solid transparent;
         }
     </style>
 </head>
+
 <body>
     <h1>Puzzle</h1>
 
@@ -36,36 +39,54 @@
     </div>
 
 
-    <script src="./main.js"></script>
+    <script src="./index.js"></script>
     <script>
-        let board = new Board();
-        board.shuffle();
-        function init(){
-            document.querySelector('#board').innerHTML = "";
-            let cells = board.getPieces();
+        const board = new PuzzleBoard(5);
+        const boardContainer = document.querySelector('#board');
 
-            for(let cellData of cells){
-                const cell = document.createElement('div');
-                cell.innerHTML = cellData.value;
-                document.querySelector('#board').append(cell)
-
-                cell.addEventListener('click', ()=>{
-                    board.swapToPosition(cellData.i, cellData.j);
-                    update();
-                })
-            }
-            update()
+        function createTile(tile) {
+            if(tile == undefined) return;
+            const div = document.createElement('div');
+            div.id = tile.__id;
+            div.innerHTML = tile.value;
+            div.style.background = tile.type;
+            div.style.height = 100 / board.size + '%'
+            div.style.width = 100 / board.size + '%'
+            boardContainer.append(div);
+            div.addEventListener('click', () => {
+                board.movePosition(tile.position.i, tile.position.j, ({ row, column }) => {
+                    if (new Set(row.map(c => c?.type)).size == 1) {
+                        alert("Wuu!")
+                        // board.removeRow(tile.position.i);
+                        // reset();
+                    }
+                    if (new Set(column.map(c => c?.type)).size == 1) {
+                        alert("Wuu!");
+                        // board.removeColumn(tile.position.j)
+                        // reset();
+                    }
+                });
+                update();
+            })
+            return div
         }
 
-        function update(){
-            let cells = board.getPieces();
-            document.querySelectorAll('#board>div').forEach((cellElement, i) => {
-                cellElement.style.top = 25*cells[i].i + '%'
-                cellElement.style.left = 25*cells[i].j + '%'
+        function update() {
+            board.getTiles().forEach((tile, i) => {
+                if(tile == undefined) return;
+                const div = document.getElementById(tile.__id) || createTile(tile)
+                div.style.top = 100 * tile.position.i / board.size + '%'
+                div.style.left = 100 * tile.position.j / board.size + '%'
             })
         }
 
-        init();
+        function reset() {
+            boardContainer.innerHTML = "";
+            update();
+        }
+
+        update();
     </script>
 </body>
+
 </html>
