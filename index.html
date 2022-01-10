@@ -5,40 +5,67 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Puzzle</title>
+    <style>
+        #board{
+            height: 400px;
+            width: 400px;
+            background: #303030;
+            border: 4px solid #303030;
+            border-radius: 4px;
+            position: relative;
+        }
+        #board>div{
+            box-sizing: border-box;
+            border: 1px solid #303030;
+            height: 25%;
+            width: 25%;
+            background-color: black;
+            color: white;
+            position: absolute;
+            transition: 0.5s ease-in-out;
+        }
+        #board>div:empty{
+            background: transparent;
+        }
+    </style>
 </head>
 <body>
     <h1>Puzzle</h1>
-    <table></table>
+
+    <div id="board">
+    </div>
+
 
     <script src="./main.js"></script>
     <script>
         let board = new Board();
         board.shuffle();
-        const table = document.querySelector('table')
+        function init(){
+            document.querySelector('#board').innerHTML = "";
+            let cells = board.getPieces();
+
+            for(let cellData of cells){
+                const cell = document.createElement('div');
+                cell.innerHTML = cellData.value;
+                document.querySelector('#board').append(cell)
+
+                cell.addEventListener('click', ()=>{
+                    board.swapToPosition(cellData.i, cellData.j);
+                    update();
+                })
+            }
+            update()
+        }
 
         function update(){
-            table.innerHTML = "";
-            board.pieces.forEach((rowData, i) => {
-                let row = document.createElement('tr');
-                table.append(row);
-                rowData.forEach((cellData, j) => {
-                    let cell = document.createElement('td');
-                    let button = document.createElement('button');
-                    button.innerHTML = cellData;
-                    cell.append(button);
-                    row.append(cell)
-
-                    cell.addEventListener('click', e=>{
-                        board.swapToPosition(i, j);
-                        update();
-                    })
-
-                })
+            let cells = board.getPieces();
+            document.querySelectorAll('#board>div').forEach((cellElement, i) => {
+                cellElement.style.top = 25*cells[i].i + '%'
+                cellElement.style.left = 25*cells[i].j + '%'
             })
         }
 
-        
-        update()
+        init();
     </script>
 </body>
 </html>
