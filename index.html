@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Puzzle</title>
+</head>
+<body>
+    <h1>Puzzle</h1>
+    <table></table>
+
+    <script src="./main.js"></script>
+    <script>
+        let board = new Board();
+        board.shuffle();
+        const table = document.querySelector('table')
+
+        function update(){
+            table.innerHTML = "";
+            board.pieces.forEach((rowData, i) => {
+                let row = document.createElement('tr');
+                table.append(row);
+                rowData.forEach((cellData, j) => {
+                    let cell = document.createElement('td');
+                    let button = document.createElement('button');
+                    button.innerHTML = cellData;
+                    cell.append(button);
+                    row.append(cell)
+
+                    cell.addEventListener('click', e=>{
+                        board.swapToPosition(i, j);
+                        update();
+                    })
+
+                })
+            })
+        }
+
+        
+        update()
+    </script>
+</body>
+</html>
