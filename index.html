@@ -26,30 +26,30 @@
             width: 400px;
             background: #303030;
             border: 4px solid #303030;
-            border-radius: 4px;
+            border-radius: 18px;
             position: relative;
             /* transform: rotateX(60deg) rotateY(0deg) rotateZ(-45deg); */
         }
 
         #board>div {
             box-sizing: border-box;
-            border: 1px solid #303030;
-            background-color: black;
+            border: 4px solid #303030;
+            background-color: transparent;
+            border-radius: 16px;
             color: white;
             position: absolute;
             transition: 0.5s ease-in-out;
             font-size: 2em;
+            line-height: 2em;
+            text-align: center;
+            font-family: Arial, Helvetica, sans-serif;
+            font-weight: bold;
         }
 
-        #board>div>span{
-            display: block;
-            height: 100%;
-            width: 100%;
-        }
 
         #board>div:empty {
             background: transparent;
-            border: 1px solid transparent;
+            border: 4px solid transparent;
         }
     </style>
 </head>
@@ -73,7 +73,7 @@
     <script src="./index.js"></script>
     <script>
         const board = new PuzzleBoard(5);
-        board.shuffle();
+        board.shuffle(100);
         const rules = {
             'classic': ({row, column, tile}) => {
                 let solved = true;
@@ -99,6 +99,9 @@
                     reset();
                     score++;
                 }
+            }, 
+            'divisions': ({row, column, tile}) => {
+
             }
         }
 
@@ -108,7 +111,7 @@
             if(tile == undefined) return;
             const div = document.createElement('div');
             div.id = tile.__id;
-            div.innerHTML = `<span>${tile.value}</span>`;
+            div.innerHTML = tile.value;
             div.style.background = tile.type;
             div.style.height = 100 / board.size + '%'
             div.style.width = 100 / board.size + '%'
