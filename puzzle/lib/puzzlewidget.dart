@@ -72,6 +72,13 @@ class PuzzleBoardWidgetState extends State<PuzzleBoardWidget>{
     update();
   }
 
+  void moveToPosition(int i, int j){
+    widget.board.moveToPosition(i, j, (PuzzleTileMovementCallback callback){
+      widget.onChange(callback, widget.board);
+      update();
+    });
+  }
+
   void update(){
     setState(() {  
       tiles = widget.board.getTiles().map((tile){
@@ -85,10 +92,7 @@ class PuzzleBoardWidgetState extends State<PuzzleBoardWidget>{
             size: widget.size / widget.board.size,
             color: tile.type == 'empty' ? Colors.transparent : Colors.black,
             onTap: (){
-              widget.board.moveToPosition(tile.position.i, tile.position.j, (PuzzleTileMovementCallback c){
-                widget.onChange(c, widget.board);
-                update();
-              });
+              moveToPosition(tile.position.i, tile.position.j);
             },
           ),
         );

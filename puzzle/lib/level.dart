@@ -17,7 +17,7 @@ class LevelWidgetState extends State<LevelWidget>{
   Widget build(BuildContext context){
     return PuzzleBoardWidget(
       shuffled: true,
-      level: 4,
+      level: 5,
       onChange: (PuzzleTileMovementCallback callback, PuzzleBoard board){
 
       },
