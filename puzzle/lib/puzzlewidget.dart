@@ -30,7 +30,7 @@ class PuzzleTileWidget extends StatelessWidget{
         color: color,
         child: child,
         margin: const EdgeInsets.all(4),
-        alignment: Alignment.center,
+        alignment: Alignment.center
       ),
     );
   }
@@ -40,10 +40,14 @@ class PuzzleBoardWidget extends StatefulWidget{
   late double size;
   late int level;
   late PuzzleBoard board;
-  late Function onChange;
   late bool? shuffled;
   late Function tileGenerator;
   late Function tileDecorator;
+
+  late Function onChange;
+  late Function? onWin;
+  late Function? onLoose;
+  late Function? onScore;
   PuzzleBoardWidget({
     Key? key, 
     this.size = 500, 
@@ -51,15 +55,26 @@ class PuzzleBoardWidget extends StatefulWidget{
     required this.onChange,
     required this.tileGenerator, 
     required this.tileDecorator,
+    this.onWin, 
+    this.onLoose, 
+    this.onScore,
     this.shuffled,
   }) : super(key: key) {
     board = PuzzleBoard(level, tileGenerator);
     if(shuffled == true) board.shuffle(10*level*level);
   }
-
   @override
   PuzzleBoardWidgetState createState() => PuzzleBoardWidgetState();
 
+  void win(){
+    board.win(onWin);
+  }
+  void loose(){
+    board.loose(onLoose);
+  }
+  void score(){
+    board.score(onScore);
+  }
 }
 
 

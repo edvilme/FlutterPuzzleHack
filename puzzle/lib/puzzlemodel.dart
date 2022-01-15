@@ -11,10 +11,12 @@ class PuzzleTileMovementCallback {
 	final List<PuzzleTile?> row;
 	final List<PuzzleTile?> column;
 	PuzzleTile tile;
+  int moves;
 	PuzzleTileMovementCallback({
 		required this.row, 
 		required this.column, 
-		required this.tile
+		required this.tile, 
+    this.moves = 0
 	});
 }
 
@@ -43,6 +45,7 @@ class PuzzleBoard {
 	late List<List<PuzzleTile?>> tiles;
 	late PuzzleTile emptyTile;
 
+  late int moves = 0;
 
 	PuzzleBoard(int n, [Function? randomGenerator]){
 		tiles = List<List<PuzzleTile?>>.generate(n, (index) => List<PuzzleTile?>.generate(n, (index) => null));
@@ -99,8 +102,9 @@ class PuzzleBoard {
 		tiles[origin.i][origin.j] = emptyTile;
 		emptyTile.position = origin;
 
+    moves++;
 		callback(
-			PuzzleTileMovementCallback(row: getRow(dest.i), column: getColumn(dest.j), tile: tile)
+			PuzzleTileMovementCallback(row: getRow(dest.i), column: getColumn(dest.j), tile: tile, moves: moves)
 		);
 	}
 	void moveInDirection(String direction, Function callback){
@@ -183,4 +187,15 @@ class PuzzleBoard {
 			moveInDirection(['up', 'down', 'left', 'right'][ Random().nextInt(4) ], (PuzzleTileMovementCallback c){});
 		}
 	}
+
+  // Win, loose, score
+  void win(Function? onWinCallback){
+    if(onWinCallback != null) onWinCallback();
+  }
+  void loose(Function? onLooseCallback){
+    if(onLooseCallback != null) onLooseCallback();
+  }
+  void score(Function? onScoreCallback){
+    if(onScoreCallback != null) onScoreCallback();
+  }
 }
