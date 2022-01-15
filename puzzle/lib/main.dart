@@ -1,4 +1,3 @@
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -37,7 +36,7 @@ void main() {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Container(
-              padding: EdgeInsets.all(30),
+              padding: const EdgeInsets.all(30),
               child: Text("12",
                 style: GoogleFonts.poiretOne(
                   fontSize: 80, 
