@@ -11,10 +11,12 @@ class Level extends StatefulWidget{
   late Function tileDecorator;
 
   late Function onChange;
-  late Function? onNextLevel;
-  late Function? onLoose;
   late Function? onScore;
+
+  late Function? onLoose;
   late Function? onPause;
+  
+  late Function? onNextLevel;
   late Function? onReset;
 
   String instructions;
@@ -29,7 +31,8 @@ class Level extends StatefulWidget{
     required this.onChange, 
     required this.tileDecorator, 
     required this.tileGenerator, 
-    this.onLoose, 
+    // this.onLoose, 
+    this.onReset,
     this.onScore, 
     this.onNextLevel, 
     this.onPause,
@@ -76,7 +79,7 @@ class LevelState extends State<Level> {
         setState(() {
           score = "You loose";
         });
-        widget.onLoose!();
+        // widget.onLoose!();
       },
     );
   }
@@ -151,7 +154,11 @@ class LevelState extends State<Level> {
         },
       );
     } else if (state == "win"){
-      return LevelWin();
+      return LevelWin(
+        onNextLevel: (){
+          widget.onNextLevel!();
+        },
+      );
     } else if (state == "loose"){
       return LevelLoose();
     }
@@ -255,6 +262,7 @@ class LevelWin extends StatelessWidget{
               child: Container(
                 padding: EdgeInsets.all(8),
                 color: Colors.black,
+                height: 40,
               ),
             )
           ],

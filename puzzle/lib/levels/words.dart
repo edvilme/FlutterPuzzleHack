@@ -23,19 +23,22 @@ class WordAPIResponse {
   }
 }
 
-int count = 0;
+int counter = 0;
 
 Widget WordLevel({
-  Function? onNextLevel
+  Function? onNextLevel, 
+  Function? onReset
 }){
+  counter++;
   return FutureBuilder<http.Response>(
-    key: Key((count++).toString()),
+    key: Key("level-words-promise-" + counter.toString()),
     future: http.get(Uri.parse('https://random-words-api.vercel.app/word')),
     builder: (context, snapshot) {
       if(snapshot.hasError || snapshot.data!.statusCode != 200) return Container();
       WordAPIResponse word = WordAPIResponse.fromJson(jsonDecode(snapshot.data!.body)![0]);
       int level = sqrt(word.word.length + 1).ceil();
       return Level(
+        key: Key("level-words-" + counter.toString()),
         level: level,
         shuffled: true,
         instructions: word.definition + " (" + word.word + ")",
@@ -43,7 +46,7 @@ Widget WordLevel({
           if((t.position.i * level + t.position.j) >= word.word.length){
             t.data = " ";
           } else {
-            t.data = word.word[t.getID()];
+            t.data = word.word[t.position.i * level + t.position.j];
           }
         },
         tileDecorator: (PuzzleTileWidget w){
@@ -66,6 +69,9 @@ Widget WordLevel({
         },
         onNextLevel: (){
           onNextLevel!();
+        },
+        onReset: (){
+          onReset!();
         },
       );
     },

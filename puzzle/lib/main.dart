@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:puzzle/level.dart';
 import 'package:puzzle/levels/numbers.dart';
+import 'package:puzzle/levels/patterns.dart';
 import 'package:puzzle/levels/words.dart';
 import 'package:puzzle/puzzlemodel.dart';
 import 'package:puzzle/puzzlewidget.dart';
@@ -21,37 +22,48 @@ void main(){
 }
 
 class Game extends StatefulWidget{
-  Game({Key? key}) : super(key: key);
-
+  const Game({Key? key}) : super(key: key);
   @override
   GameState createState() => GameState();
 }
 
 class GameState extends State<Game>{
-  late Widget level;
+  // ignore: non_constant_identifier_names
+  final List ALL_LEVELS = [
+    NumberLevelEasy,
+    WordLevel,
+    NumberLevelMedium,
+    PatternsLevelEasy
+  ];
+
+  late Widget currentLevel;
 
   @override
   void initState() {
     super.initState();
-    level = WordLevel(
+    currentLevel = PatternsLevelEasy(
       onNextLevel: (){
-        nextLevel();
+        generateLevel(Random().nextInt(ALL_LEVELS.length));
       }
     );
   }
 
-  void nextLevel(){
+  void generateLevel(int index){
     setState(() {
-      level = NumberLevelEasy(
+      currentLevel = ALL_LEVELS[index](
         onNextLevel: (){
-          nextLevel();
+          generateLevel( Random().nextInt(ALL_LEVELS.length) );
+        }, 
+        onReset: (){
+          generateLevel(index);
         }
       );
     });
   }
+ 
 
   @override
   Widget build(BuildContext context){
-    return level;
+    return currentLevel;
   }
 }
