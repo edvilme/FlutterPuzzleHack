@@ -1,8 +1,10 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:puzzle/puzzlemodel.dart';
 import 'package:puzzle/puzzlewidget.dart';
 
-class LevelScreen extends StatefulWidget{
+class Level extends StatefulWidget{
   late int level;
   late bool? shuffled;
   late Function tileGenerator;
@@ -12,13 +14,14 @@ class LevelScreen extends StatefulWidget{
   late Function? onWin;
   late Function? onLoose;
   late Function? onScore;
-
   late Function? onPause;
+
+  String instructions;
 
   Color backgroundColor;
   Color foregroundColor;
 
-  LevelScreen({
+  Level({
     Key? key, 
     required this.level, 
     required this.shuffled,
@@ -30,27 +33,32 @@ class LevelScreen extends StatefulWidget{
     this.onWin, 
     this.onPause,
     this.backgroundColor = Colors.white,
-    this.foregroundColor = Colors.black87
+    this.foregroundColor = Colors.black87, 
+    this.instructions = ""
   }) : super(key: key);
 
   @override
-  LevelScreenState createState() => LevelScreenState();
+  LevelState createState() => LevelState();
 }
 
-class LevelScreenState extends State<LevelScreen> {
+class LevelState extends State<Level> {
   late PuzzleBoardWidget board;
-  late String score = "0";
-
+  late String score;
+  late String state;
+  
   @override
   void initState() {
     super.initState();
-
+    reset();
+  }
+  void reset(){
+    score = "0";
+    state = "playing";
     board = PuzzleBoardWidget(
       level: widget.level, 
       shuffled: widget.shuffled,
       tileGenerator: widget.tileGenerator, 
       tileDecorator: widget.tileDecorator,
-    
       onChange: (PuzzleTileMovementCallback c, PuzzleBoard p){
         setState(() {
           score = (p.moves++).toString();
@@ -62,7 +70,7 @@ class LevelScreenState extends State<LevelScreen> {
       },
       onWin: (){
         setState(() {
-          score = "You win";
+          state = "win";
         });
       },
       onLoose: (){
@@ -73,8 +81,7 @@ class LevelScreenState extends State<LevelScreen> {
     );
   }
 
-  @override
-  Widget build(BuildContext context){
+  Widget buildPlaying(BuildContext context){
     return Container(
       color: widget.backgroundColor,
       child: Column(
@@ -97,6 +104,9 @@ class LevelScreenState extends State<LevelScreen> {
                 ),
                 GestureDetector(
                   onTap: () {
+                    setState(() {
+                      state = "paused";
+                    });
                     if(widget.onPause != null) widget.onPause!();
                   },
                   child: Icon(
@@ -113,7 +123,7 @@ class LevelScreenState extends State<LevelScreen> {
             width: 450,
             alignment: Alignment.center,
             child: Text(
-              "Sort the numbers in ascending order",
+              widget.instructions,
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: widget.foregroundColor,
@@ -125,6 +135,118 @@ class LevelScreenState extends State<LevelScreen> {
           )
         ],
       ),
+    );
+  }
+
+  Widget buildOverlay(BuildContext context){
+    if(state == "paused"){
+      return LevelPaused(
+        onDismiss: (){
+          setState(() {
+            state = "playing";
+          });
+        },
+        onReset: (){
+          setState(() {
+            reset();
+          });
+        },
+      );
+    } else if (state == "win"){
+      return LevelWin();
+    } else if (state == "loose"){
+      return LevelLoose();
+    }
+    return Container();
+  }
+
+  @override
+  Widget build(BuildContext context){
+    return Stack(
+      fit: StackFit.expand,
+      children: [
+        buildPlaying(context), 
+        buildOverlay(context)
+      ],
+    );
+  }
+}
+
+class LevelPaused extends StatelessWidget{
+  Function? onDismiss;
+  Function? onReset;
+
+  LevelPaused({
+    Key? key,
+    this.onDismiss,
+    this.onReset
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context){
+    return BackdropFilter(
+      filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+      child: Container(
+        color: Colors.white54,
+        alignment: Alignment.center,
+        child: Container(
+          width: 450,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  GestureDetector(
+                    onTap: (){
+                      onDismiss!();
+                    },
+                    child: const Icon(
+                      Icons.play_circle_fill,
+                      size: 80,
+                      color: Colors.black,
+                    ),
+                  ), 
+                  GestureDetector(
+                    onTap: (){
+                      onReset!();
+                    },
+                    child: const Icon(
+                      Icons.replay_circle_filled_outlined, 
+                      size: 80,
+                      color: Colors.black,
+                    ),
+                  )
+                ],
+              )
+            ],
+          ),
+        )
+      ),
+    );
+  }
+}
+
+class LevelWin extends StatelessWidget{
+  LevelWin({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context){
+    return BackdropFilter(
+      filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+      child: Text("You win"),
+    );
+  }
+}
+
+class LevelLoose extends StatelessWidget{
+  LevelLoose({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context){
+    return BackdropFilter(
+      filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+      child: Text("You loose"),
     );
   }
 }
