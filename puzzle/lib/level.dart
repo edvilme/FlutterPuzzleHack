@@ -72,11 +72,13 @@ class LevelState extends State<Level> {
         setState(() {
           state = "win";
         });
+        
       },
       onLoose: (){
         setState(() {
           score = "You loose";
         });
+        widget.onLoose!();
       },
     );
   }
