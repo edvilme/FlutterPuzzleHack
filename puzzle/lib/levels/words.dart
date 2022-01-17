@@ -57,11 +57,11 @@ Widget WordLevel({
           );
         },
         onChange: (PuzzleTileMovementCallback callback, PuzzleBoard board){
-          /* List<PuzzleTile> ordered = [...board.getTiles()];
+          List<PuzzleTile> ordered = [...board.getTiles()];
           ordered.sort((a, b) => (a.position.i * level + a.position.j) - (b.position.i * level + b.position.j));
           for(int i = 0; i < word.word.length; i++){
             if(word.word[i] != ordered[i].data) return null;
-          } */
+          }
           return "win";
         },
         onNextLevel: (){

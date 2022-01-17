@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:puzzle/puzzlemodel.dart';
 
 class PuzzleTileWidget extends StatelessWidget{
@@ -98,6 +99,16 @@ class PuzzleBoardWidgetState extends State<PuzzleBoardWidget>{
     });
   }
 
+  void moveInDirection(String direction){
+    for(int i = 0; i < widget.level - 1; i++){
+      widget.board.moveInDirection(direction, (PuzzleTileMovementCallback callback){
+        if(widget.onChange == null) return;
+        widget.onChange!(callback, widget.board);
+      });
+    }
+    update();
+  }
+
   void update(){
     setState(() {  
       tileWidgets = widget.board.getTiles().map((tile){
@@ -125,11 +136,21 @@ class PuzzleBoardWidgetState extends State<PuzzleBoardWidget>{
 
   @override
   Widget build(BuildContext context){
-    return Stack(
-      children: [
-        Container(width: widget.size, height: widget.size),
-        ...tileWidgets
-      ],
+    return RawKeyboardListener(
+      autofocus: true,
+      focusNode: FocusNode(),
+      onKey: (e){
+        if(e.logicalKey == LogicalKeyboardKey.arrowUp) moveInDirection("down");
+        if(e.logicalKey == LogicalKeyboardKey.arrowDown) moveInDirection("up");
+        if(e.logicalKey == LogicalKeyboardKey.arrowLeft) moveInDirection("right");
+        if(e.logicalKey == LogicalKeyboardKey.arrowRight) moveInDirection("left");
+      },
+      child: Stack(
+        children: [
+          Container(width: widget.size, height: widget.size),
+          ...tileWidgets
+        ],
+      ),
     );
   }
 
