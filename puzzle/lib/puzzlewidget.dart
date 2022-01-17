@@ -112,7 +112,7 @@ class PuzzleBoardWidgetState extends State<PuzzleBoardWidget>{
     setState(() {  
       tileWidgets = widget.board.getTiles().map((tile){
         AnimatedPositioned tileWidget = AnimatedPositioned(
-          duration: Duration(milliseconds: 100 + 100 * (widget.level - tile.position.i) + tile.position.j*100),
+          duration: Duration(milliseconds: 100 + 50 * (widget.level - tile.position.i) + 50 * tile.position.j),
           curve: Curves.easeInOutBack,
           key: Key("tile-" + tile.getID().toString()),
           top: widget.size * tile.position.i / widget.board.size,

@@ -12,12 +12,12 @@ class PuzzleTileMovementCallback {
 	final List<PuzzleTile?> row;
 	final List<PuzzleTile?> column;
 	PuzzleTile tile;
-  int moves;
+  int scoreCount;
 	PuzzleTileMovementCallback({
 		required this.row, 
 		required this.column, 
 		required this.tile, 
-    this.moves = 0
+    this.scoreCount = 0
 	});
 }
 
@@ -46,7 +46,7 @@ class PuzzleBoard {
 	late List<List<PuzzleTile?>> tiles;
 	late PuzzleTile emptyTile;
 
-  late int moves = 0;
+  late int scoreCount = 0;
   Function? tileGenerator;
 
 	PuzzleBoard({
@@ -107,9 +107,9 @@ class PuzzleBoard {
 		tiles[origin.i][origin.j] = emptyTile;
 		emptyTile.position = origin;
 
-    // moves++;
+    scoreCount++;
 		callback(
-			PuzzleTileMovementCallback(row: getRow(dest.i), column: getColumn(dest.j), tile: tile, moves: moves)
+			PuzzleTileMovementCallback(row: getRow(dest.i), column: getColumn(dest.j), tile: tile, scoreCount: scoreCount)
 		);
 	}
 	void moveInDirection(String direction, Function callback){
@@ -195,6 +195,7 @@ class PuzzleBoard {
 		for (var i = 0; i < k; i++) {
 			moveInDirection(['up', 'down', 'left', 'right'][ Random().nextInt(4) ], (PuzzleTileMovementCallback c){});
 		}
+    scoreCount = 0;
 	}
 
   // Win, loose, score

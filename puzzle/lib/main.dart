@@ -37,13 +37,17 @@ class GameState extends State<Game>{
   ];
 
   late Widget currentLevel;
-
+  late int currentLevelIndex;
   @override
   void initState() {
     super.initState();
-    currentLevel = PatternsLevelEasy(
+    currentLevelIndex =  Random().nextInt(ALL_LEVELS.length);
+    currentLevel = ALL_LEVELS[currentLevelIndex](
       onNextLevel: (){
         generateLevel(Random().nextInt(ALL_LEVELS.length));
+      }, 
+      onReset: (){
+        generateLevel(currentLevelIndex);
       }
     );
   }

@@ -62,7 +62,7 @@ class LevelState extends State<Level> {
       tileDecorator: widget.tileDecorator,
       onChange: (PuzzleTileMovementCallback c, PuzzleBoard p){
         setState(() {
-          score = (p.moves++).toString();
+          score = (p.scoreCount).toString();
         });
         String? result = widget.onChange(c, p);
         if(result == null) return;
