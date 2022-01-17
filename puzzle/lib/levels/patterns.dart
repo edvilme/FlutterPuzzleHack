@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -36,9 +37,15 @@ Widget PatternsLevelEasy({
         callback.column.map((e) => e!.type)
       );
 
-/*       if(rowPatterns.length == 1){
+      if(columnPatterns.length == 1){
+        board.removeColumn(callback.tile.position.j);
+        board.refillColumn(callback.tile.position.j);
+      }
+
+      if(rowPatterns.length == 1){
         board.removeRow(callback.tile.position.i);
-      } */
+        board.refillRow(0);
+      }
 
     },
     instructions: "Line up similar patterns",

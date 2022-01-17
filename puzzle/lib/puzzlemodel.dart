@@ -1,4 +1,5 @@
 
+import 'dart:io';
 import 'dart:math';
 
 class PuzzleTilePosition {
@@ -46,10 +47,14 @@ class PuzzleBoard {
 	late PuzzleTile emptyTile;
 
   late int moves = 0;
+  Function? tileGenerator;
 
-	PuzzleBoard(int n, [Function? randomGenerator]){
+	PuzzleBoard({
+    required this.size, 
+    this.tileGenerator 
+  }){
+    int n = size;
 		tiles = List<List<PuzzleTile?>>.generate(n, (index) => List<PuzzleTile?>.generate(n, (index) => null));
-		size = n;
 		for(int i = 0; i < n; i++){
 			for(int j = 0; j < n; j++){
 				tiles[i][j] = 
@@ -58,7 +63,7 @@ class PuzzleBoard {
 						position: PuzzleTilePosition(i: i, j: j),
 						data: (n*i + j + 1).toString()
 					);
-					if(randomGenerator != null) randomGenerator(tiles[i][j]);
+					if(tileGenerator != null) tileGenerator!(tiles[i][j]);
 			}
 		}
 		emptyTile = PuzzleTile(
@@ -159,26 +164,30 @@ class PuzzleBoard {
 		}
 	}
 	void removeRow(int i){
-		while(i < 0){
-			for (int j = 0; j < size; j++) {
-				tiles[i][j] = tiles[i-1][j];
-				tiles[i][j]!.position = PuzzleTilePosition(i: i, j: j);
-			}
-			i--;
-		}
-		tiles[0] = List<PuzzleTile?>.filled(size, null);
+    while(i > 0){
+      for(int j = 0; j < size; j++){
+        tiles[i][j] = tiles[i-1][j];
+        tiles[i][j]!.position = PuzzleTilePosition(i: i, j: j);
+      }
+      i--;
+    }
+    for(int j = 0; j < size; j++){
+      tiles[0][j] = null;
+    }
 	}
 	
 	// Refill
 	void refillColumn(int j){
 		for (int i = 0; i < size; i++) {
 			tiles[i][j] = PuzzleTile(correctPosition: PuzzleTilePosition(i: i, j: j), position: PuzzleTilePosition(i: i, j: j));
-		}
+      if(tileGenerator != null) tileGenerator!(tiles[i][j]);
+    }
 	}
 	void refillRow(int i){
 		for (int j = 0; j < size; j++) {
 			tiles[i][j] = PuzzleTile(correctPosition: PuzzleTilePosition(i: i, j: j), position: PuzzleTilePosition(i: i, j: j));
-		}
+      if(tileGenerator != null) tileGenerator!(tiles[i][j]);
+    }
 	}
 
 	// Shuffle

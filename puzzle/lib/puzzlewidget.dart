@@ -62,7 +62,7 @@ class PuzzleBoardWidget extends StatefulWidget{
     this.onScore,
     this.shuffled,
   }) : super(key: key) {
-    board = PuzzleBoard(level, tileGenerator);
+    board = PuzzleBoard(size: level, tileGenerator: tileGenerator);
     if(shuffled == true) board.shuffle(10*level*level);
   }
   @override
@@ -81,7 +81,6 @@ class PuzzleBoardWidget extends StatefulWidget{
 
 
 class PuzzleBoardWidgetState extends State<PuzzleBoardWidget>{
-  // List<PuzzleTile> tileModels = [];
 
   List<Widget> tileWidgets = [];
 
@@ -113,9 +112,9 @@ class PuzzleBoardWidgetState extends State<PuzzleBoardWidget>{
     setState(() {  
       tileWidgets = widget.board.getTiles().map((tile){
         AnimatedPositioned tileWidget = AnimatedPositioned(
-          duration: Duration(milliseconds: 400),
+          duration: Duration(milliseconds: 100 + 100 * (widget.level - tile.position.i) + tile.position.j*100),
           curve: Curves.easeInOutBack,
-          key: Key(tile.getID().toString()),
+          key: Key("tile-" + tile.getID().toString()),
           top: widget.size * tile.position.i / widget.board.size,
           left: widget.size * tile.position.j / widget.board.size,
           child: PuzzleTileWidget(
@@ -153,5 +152,4 @@ class PuzzleBoardWidgetState extends State<PuzzleBoardWidget>{
       ),
     );
   }
-
 }
