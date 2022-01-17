@@ -5,7 +5,7 @@ import 'package:puzzle/puzzlemodel.dart';
 import 'package:puzzle/puzzlewidget.dart';
 
 Widget NumberLevelEasy({
-  Function? onWin,
+  Function? onNextLevel,
 }){
   return Level(
     shuffled: true, 
@@ -28,8 +28,8 @@ Widget NumberLevelEasy({
       if(!isIncorrect) return "win";
     },
     instructions: "Sort the numbers in order",
-    onWin: (){
-      onWin!();
+    onNextLevel: (){
+      onNextLevel!();
     },
   );
 }

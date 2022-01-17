@@ -34,7 +34,7 @@ class GameState extends State<Game>{
   void initState() {
     super.initState();
     level = WordLevel(
-      onWin: (){
+      onNextLevel: (){
         nextLevel();
       }
     );
@@ -43,7 +43,7 @@ class GameState extends State<Game>{
   void nextLevel(){
     setState(() {
       level = NumberLevelEasy(
-        onWin: (){
+        onNextLevel: (){
           nextLevel();
         }
       );

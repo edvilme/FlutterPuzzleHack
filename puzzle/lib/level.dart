@@ -11,10 +11,11 @@ class Level extends StatefulWidget{
   late Function tileDecorator;
 
   late Function onChange;
-  late Function? onWin;
+  late Function? onNextLevel;
   late Function? onLoose;
   late Function? onScore;
   late Function? onPause;
+  late Function? onReset;
 
   String instructions;
 
@@ -30,7 +31,7 @@ class Level extends StatefulWidget{
     required this.tileGenerator, 
     this.onLoose, 
     this.onScore, 
-    this.onWin, 
+    this.onNextLevel, 
     this.onPause,
     this.backgroundColor = Colors.white,
     this.foregroundColor = Colors.black87, 
@@ -49,9 +50,6 @@ class LevelState extends State<Level> {
   @override
   void initState() {
     super.initState();
-    reset();
-  }
-  void reset(){
     score = "0";
     state = "playing";
     board = PuzzleBoardWidget(
@@ -149,9 +147,7 @@ class LevelState extends State<Level> {
           });
         },
         onReset: (){
-          setState(() {
-            reset();
-          });
+          widget.onReset!();
         },
       );
     } else if (state == "win"){
@@ -230,13 +226,40 @@ class LevelPaused extends StatelessWidget{
 }
 
 class LevelWin extends StatelessWidget{
-  LevelWin({Key? key}) : super(key: key);
+  Function? onNextLevel;
+  LevelWin({
+    Key? key, 
+    this.onNextLevel
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context){
     return BackdropFilter(
       filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
-      child: Text("You win"),
+      child: Container(
+        width: 450,
+        color: Colors.white54, 
+        child: Column(
+          children: [
+            Text(
+              "You win!",
+              style: TextStyle(
+                color: Colors.black, 
+                decoration: TextDecoration.none
+              ),
+            ), 
+            GestureDetector(
+              onTap: (){
+                onNextLevel!();
+              },
+              child: Container(
+                padding: EdgeInsets.all(8),
+                color: Colors.black,
+              ),
+            )
+          ],
+        ),
+      )
     );
   }
 }

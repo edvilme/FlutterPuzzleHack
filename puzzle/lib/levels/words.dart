@@ -26,7 +26,7 @@ class WordAPIResponse {
 int count = 0;
 
 Widget WordLevel({
-  Function? onWin
+  Function? onNextLevel
 }){
   return FutureBuilder<http.Response>(
     key: Key((count++).toString()),
@@ -37,7 +37,7 @@ Widget WordLevel({
       int level = sqrt(word.word.length + 1).ceil();
       return Level(
         level: level,
-        shuffled: false,
+        shuffled: true,
         instructions: word.definition + " (" + word.word + ")",
         tileGenerator: (PuzzleTile t){
           if((t.position.i * level + t.position.j) >= word.word.length){
@@ -57,15 +57,15 @@ Widget WordLevel({
           );
         },
         onChange: (PuzzleTileMovementCallback callback, PuzzleBoard board){
-          List<PuzzleTile> ordered = [...board.getTiles()];
+          /* List<PuzzleTile> ordered = [...board.getTiles()];
           ordered.sort((a, b) => (a.position.i * level + a.position.j) - (b.position.i * level + b.position.j));
           for(int i = 0; i < word.word.length; i++){
             if(word.word[i] != ordered[i].data) return null;
-          }
+          } */
           return "win";
         },
-        onWin: (){
-          onWin!();
+        onNextLevel: (){
+          onNextLevel!();
         },
       );
     },

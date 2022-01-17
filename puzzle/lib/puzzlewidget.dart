@@ -80,7 +80,9 @@ class PuzzleBoardWidget extends StatefulWidget{
 
 
 class PuzzleBoardWidgetState extends State<PuzzleBoardWidget>{
-  List<Widget> tiles = [];
+  // List<PuzzleTile> tileModels = [];
+
+  List<Widget> tileWidgets = [];
 
   @override
   void initState() {
@@ -98,9 +100,11 @@ class PuzzleBoardWidgetState extends State<PuzzleBoardWidget>{
 
   void update(){
     setState(() {  
-      tiles = widget.board.getTiles().map((tile){
-        Positioned tileWidget = Positioned(
-          // key: Key(tile.getID().toString()),
+      tileWidgets = widget.board.getTiles().map((tile){
+        AnimatedPositioned tileWidget = AnimatedPositioned(
+          duration: Duration(milliseconds: 400),
+          curve: Curves.easeInOutBack,
+          key: Key(tile.getID().toString()),
           top: widget.size * tile.position.i / widget.board.size,
           left: widget.size * tile.position.j / widget.board.size,
           child: PuzzleTileWidget(
@@ -124,7 +128,7 @@ class PuzzleBoardWidgetState extends State<PuzzleBoardWidget>{
     return Stack(
       children: [
         Container(width: widget.size, height: widget.size),
-        ...tiles
+        ...tileWidgets
       ],
     );
   }
