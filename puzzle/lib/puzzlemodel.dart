@@ -102,7 +102,7 @@ class PuzzleBoard {
 		tiles[origin.i][origin.j] = emptyTile;
 		emptyTile.position = origin;
 
-    moves++;
+    // moves++;
 		callback(
 			PuzzleTileMovementCallback(row: getRow(dest.i), column: getColumn(dest.j), tile: tile, moves: moves)
 		);

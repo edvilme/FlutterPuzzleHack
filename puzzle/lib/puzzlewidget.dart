@@ -37,24 +37,25 @@ class PuzzleTileWidget extends StatelessWidget{
 }
 
 class PuzzleBoardWidget extends StatefulWidget{
+  late PuzzleBoard board;
+
   late double size;
   late int level;
-  late PuzzleBoard board;
   late bool? shuffled;
   late Function tileGenerator;
   late Function tileDecorator;
 
-  late Function onChange;
+  late Function? onChange;
   late Function? onWin;
   late Function? onLoose;
   late Function? onScore;
   PuzzleBoardWidget({
     Key? key, 
-    this.size = 500, 
+    this.size = 300, 
     required this.level, 
-    required this.onChange,
     required this.tileGenerator, 
     required this.tileDecorator,
+    this.onChange,
     this.onWin, 
     this.onLoose, 
     this.onScore,
@@ -89,7 +90,8 @@ class PuzzleBoardWidgetState extends State<PuzzleBoardWidget>{
 
   void moveToPosition(int i, int j){
     widget.board.moveToPosition(i, j, (PuzzleTileMovementCallback callback){
-      widget.onChange(callback, widget.board);
+      if(widget.onChange == null) return;
+      widget.onChange!(callback, widget.board);
       update();
     });
   }
