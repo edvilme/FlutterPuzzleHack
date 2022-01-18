@@ -25,6 +25,12 @@ class PuzzleTileWidget extends StatelessWidget{
       onTap: (){
         onTap();
       },
+      onHorizontalDragEnd: (details){
+        onTap();
+      },
+      onVerticalDragEnd: (details){
+        onTap();
+      },
       child: Container(
         height: size - 8,
         width: size - 8,
@@ -50,6 +56,7 @@ class PuzzleBoardWidget extends StatefulWidget{
   late Function? onWin;
   late Function? onLoose;
   late Function? onScore;
+
   PuzzleBoardWidget({
     Key? key, 
     this.size = 300, 

@@ -53,7 +53,6 @@ class LevelState extends State<Level> {
   @override
   void initState() {
     super.initState();
-    score = "0";
     state = "playing";
     board = PuzzleBoardWidget(
       level: widget.level, 
@@ -62,7 +61,7 @@ class LevelState extends State<Level> {
       tileDecorator: widget.tileDecorator,
       onChange: (PuzzleTileMovementCallback c, PuzzleBoard p){
         setState(() {
-          score = (p.scoreCount).toString();
+          score = (p.shuffledMoves - p.moveCount).toString();
         });
         String? result = widget.onChange(c, p);
         if(result == null) return;
@@ -82,6 +81,7 @@ class LevelState extends State<Level> {
         // widget.onLoose!();
       },
     );
+    score = board.board.shuffledMoves.toString();
   }
 
   Widget buildPlaying(BuildContext context){
@@ -92,7 +92,7 @@ class LevelState extends State<Level> {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           Container(
-            width: 450,
+            width: 300,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -123,7 +123,7 @@ class LevelState extends State<Level> {
           ),
           board, 
           Container(
-            width: 450,
+            width: 300,
             alignment: Alignment.center,
             child: Text(
               widget.instructions,
@@ -208,7 +208,7 @@ class LevelPaused extends StatelessWidget{
                     },
                     child: const Icon(
                       Icons.play_circle_fill,
-                      size: 80,
+                      size: 160,
                       color: Colors.black,
                     ),
                   ), 
@@ -218,7 +218,7 @@ class LevelPaused extends StatelessWidget{
                     },
                     child: const Icon(
                       Icons.replay_circle_filled_outlined, 
-                      size: 80,
+                      size: 160,
                       color: Colors.black,
                     ),
                   )
@@ -247,6 +247,7 @@ class LevelWin extends StatelessWidget{
         width: 450,
         color: Colors.white54, 
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
               "You win!",
@@ -260,9 +261,21 @@ class LevelWin extends StatelessWidget{
                 onNextLevel!();
               },
               child: Container(
+                margin: EdgeInsets.all(8),
                 padding: EdgeInsets.all(8),
                 color: Colors.black,
                 height: 40,
+                width: 300,
+                child: const Text(
+                  "Next level", 
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 20,
+                    decoration: TextDecoration.none,
+                    color: Colors.white, 
+                    fontWeight: FontWeight.w300
+                  ),
+                ),
               ),
             )
           ],

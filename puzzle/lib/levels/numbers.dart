@@ -47,7 +47,7 @@ Widget NumberLevelMedium({
 }){
   counter++;
   return Level(
-    level: 5,
+    level: 4,
     key: Key("level-number-" + (counter++).toString()),
     shuffled: true,
     tileGenerator: (PuzzleTile t){

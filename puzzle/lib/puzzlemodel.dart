@@ -6,18 +6,22 @@ class PuzzleTilePosition {
 	final int i;
 	final int j;
 	PuzzleTilePosition({required this.i, required this.j});
+  @override
+  String toString(){
+    return "("+i.toString()+","+j.toString()+")";
+  }
 }
 
 class PuzzleTileMovementCallback {
 	final List<PuzzleTile?> row;
 	final List<PuzzleTile?> column;
 	PuzzleTile tile;
-  int scoreCount;
+  int moveCount;
 	PuzzleTileMovementCallback({
 		required this.row, 
 		required this.column, 
 		required this.tile, 
-    this.scoreCount = 0
+    this.moveCount = 0
 	});
 }
 
@@ -46,8 +50,10 @@ class PuzzleBoard {
 	late List<List<PuzzleTile?>> tiles;
 	late PuzzleTile emptyTile;
 
-  late int scoreCount = 0;
   Function? tileGenerator;
+
+  late int moveCount = 0;
+  late int shuffledMoves = 0;
 
 	PuzzleBoard({
     required this.size, 
@@ -107,9 +113,9 @@ class PuzzleBoard {
 		tiles[origin.i][origin.j] = emptyTile;
 		emptyTile.position = origin;
 
-    scoreCount++;
+    // moveCount++;
 		callback(
-			PuzzleTileMovementCallback(row: getRow(dest.i), column: getColumn(dest.j), tile: tile, scoreCount: scoreCount)
+			PuzzleTileMovementCallback(row: getRow(dest.i), column: getColumn(dest.j), tile: tile, moveCount: moveCount)
 		);
 	}
 	void moveInDirection(String direction, Function callback){
@@ -155,6 +161,7 @@ class PuzzleBoard {
             	moveInDirection('down', callback);
             }
         }
+        moveCount++;
 	}
 
 	// Remove
@@ -192,11 +199,31 @@ class PuzzleBoard {
 
 	// Shuffle
 	void shuffle(int k){
+    Set<String> moves = {};
 		for (var i = 0; i < k; i++) {
+      moves.add(
+        getCurrentState().join(" ")
+      );
 			moveInDirection(['up', 'down', 'left', 'right'][ Random().nextInt(4) ], (PuzzleTileMovementCallback c){});
-		}
-    scoreCount = 0;
+    }
+    moveCount = 0;
+    shuffledMoves = moves.length;
 	}
+
+  // Get state
+  List<Map<String, int>> getCurrentState(){
+		List<Map<String, int>> result = List<Map<String, int>>.empty(growable: true);
+    for(int i = 0; i < size; i++){
+      for(int j = 0; j < size; j++){
+        if(tiles[i][j]!.type == 'empty') continue;
+        result.add({
+          "i": tiles[i][j]!.position.i, 
+          "j": tiles[i][j]!.position.j
+        });
+      }
+    }
+    return result;
+  }
 
   // Win, loose, score
   void win(Function? onWinCallback){

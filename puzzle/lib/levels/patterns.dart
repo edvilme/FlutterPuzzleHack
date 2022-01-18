@@ -47,7 +47,7 @@ Widget PatternsLevelEasy({
         board.refillRow(0);
       }
 
-      if(board.scoreCount > 100) return "win";
+      if(board.moveCount > 100) return "win";
     },
     instructions: "Line up similar patterns",
     onNextLevel: (){
