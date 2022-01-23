@@ -49,7 +49,7 @@ Widget PatternsLevelEasy({
 
       if(board.moveCount > 100) return "win";
     },
-    instructions: "Line up similar patterns",
+    instructions: "Line up tiles of the same color a couple of times (horizontally or vertically)",
     onNextLevel: (){
       onNextLevel!();
     },

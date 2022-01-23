@@ -100,6 +100,7 @@ class PuzzleBoardWidgetState extends State<PuzzleBoardWidget>{
   void moveToPosition(int i, int j){
     widget.board.moveToPosition(i, j, (PuzzleTileMovementCallback callback){
       if(widget.onChange == null) return;
+      HapticFeedback.selectionClick();
       widget.onChange!(callback, widget.board);
       update();
     });
@@ -109,6 +110,7 @@ class PuzzleBoardWidgetState extends State<PuzzleBoardWidget>{
     for(int i = 0; i < widget.level - 1; i++){
       widget.board.moveInDirection(direction, (PuzzleTileMovementCallback callback){
         if(widget.onChange == null) return;
+        HapticFeedback.selectionClick();
         widget.onChange!(callback, widget.board);
       });
     }

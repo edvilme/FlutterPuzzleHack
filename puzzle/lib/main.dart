@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:puzzle/level.dart';
+import 'package:puzzle/levels/image.dart';
 import 'package:puzzle/levels/numbers.dart';
 import 'package:puzzle/levels/patterns.dart';
 import 'package:puzzle/levels/words.dart';
@@ -30,10 +31,11 @@ class Game extends StatefulWidget{
 class GameState extends State<Game>{
   // ignore: non_constant_identifier_names
   final List ALL_LEVELS = [
-    NumberLevelEasy,
+    /* NumberLevelEasy,
     WordLevel,
     NumberLevelMedium,
-    PatternsLevelEasy
+    PatternsLevelEasy */
+    ImageLevel
   ];
 
   late Widget currentLevel;
