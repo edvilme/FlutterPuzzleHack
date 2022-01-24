@@ -32,11 +32,11 @@ class PuzzleTileWidget extends StatelessWidget{
         onTap();
       },
       child: Container(
-        height: size - 8,
-        width: size - 8,
+        height: size - 4,
+        width: size - 4,
         color: color,
         child: child,
-        margin: const EdgeInsets.all(4),
+        margin: const EdgeInsets.all(0),
         alignment: Alignment.center
       ),
     );

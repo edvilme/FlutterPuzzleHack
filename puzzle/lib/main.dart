@@ -31,10 +31,10 @@ class Game extends StatefulWidget{
 class GameState extends State<Game>{
   // ignore: non_constant_identifier_names
   final List ALL_LEVELS = [
-    /* NumberLevelEasy,
+    NumberLevelEasy, 
     WordLevel,
     NumberLevelMedium,
-    PatternsLevelEasy */
+    PatternsLevelEasy,
     ImageLevel
   ];
 
