@@ -82,7 +82,7 @@ Widget GyroLevel({
   return Level(
     key: Key("level-gyro-"+(counter++).toString()),
     level: 3,
-    shuffled: false,
+    shuffled: true,
     tileGenerator: (PuzzleTile t){
       t.type = 'tile';
     },

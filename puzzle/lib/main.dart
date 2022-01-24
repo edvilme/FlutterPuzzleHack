@@ -1,8 +1,9 @@
 
 import 'dart:math';
-
+import 'dart:io' as IO;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:http/io_client.dart';
 import 'package:puzzle/level.dart';
 import 'package:puzzle/levels/gyro.dart';
 import 'package:puzzle/levels/image.dart';
@@ -37,7 +38,6 @@ class GameState extends State<Game>{
     NumberLevelMedium,
     PatternsLevelEasy,
     ImageLevel, 
-    GyroLevel
   ];
 
   late Widget currentLevel;
@@ -45,6 +45,10 @@ class GameState extends State<Game>{
   @override
   void initState() {
     super.initState();
+    if(IO.Platform.isAndroid || IO.Platform.isAndroid){
+      ALL_LEVELS.add(GyroLevel);
+    }
+    
     currentLevelIndex =  Random().nextInt(ALL_LEVELS.length);
     currentLevel = ALL_LEVELS[currentLevelIndex](
       onNextLevel: (){

@@ -2,13 +2,12 @@
 FLUTTER_ROOT=/Users/edvilme/Tools/flutter
 FLUTTER_APPLICATION_PATH=/Users/edvilme/Documents/Contests/FlutterPuzzleHack/puzzle
 COCOAPODS_PARALLEL_CODE_SIGN=true
-FLUTTER_TARGET=/Users/edvilme/Documents/Contests/FlutterPuzzleHack/puzzle/lib/main.dart
+FLUTTER_TARGET=lib/main.dart
 FLUTTER_BUILD_DIR=build
 FLUTTER_BUILD_NAME=1.0.0
-FLUTTER_BUILD_NUMBER=8
+FLUTTER_BUILD_NUMBER=9
 EXCLUDED_ARCHS[sdk=iphonesimulator*]=i386
-DART_DEFINES=RkxVVFRFUl9XRUJfQVVUT19ERVRFQ1Q9dHJ1ZQ==
 DART_OBFUSCATION=false
-TRACK_WIDGET_CREATION=true
-TREE_SHAKE_ICONS=false
+TRACK_WIDGET_CREATION=false
+TREE_SHAKE_ICONS=true
 PACKAGE_CONFIG=/Users/edvilme/Documents/Contests/FlutterPuzzleHack/puzzle/.dart_tool/package_config.json
