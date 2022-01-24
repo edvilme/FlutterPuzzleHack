@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:puzzle/level.dart';
+import 'package:puzzle/levels/gyro.dart';
 import 'package:puzzle/levels/image.dart';
 import 'package:puzzle/levels/numbers.dart';
 import 'package:puzzle/levels/patterns.dart';
@@ -35,7 +36,8 @@ class GameState extends State<Game>{
     WordLevel,
     NumberLevelMedium,
     PatternsLevelEasy,
-    ImageLevel
+    ImageLevel, 
+    GyroLevel
   ];
 
   late Widget currentLevel;

@@ -1,8 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:puzzle/level.dart';
 import 'package:puzzle/puzzlemodel.dart';
 import 'package:puzzle/puzzlewidget.dart';
-
+import 'package:http/http.dart' as http;
 
 // Image.network("https://picsum.photos/200", width: 100, height: 100,)
 
@@ -56,31 +58,4 @@ Widget ImageLevel({
     },
     instructions: "Sort the tiles to form the image",
   );
-  /* return Column(
-    children: [
-      CroppedImage(
-        img: Image.network("https://i.picsum.photos/id/1024/1920/1280.jpg?hmac=-PIpG7j_fRwN8Qtfnsc3M8-kC3yb0XYOBfVzlPSuVII", width: 300, height: 300,),
-        cropHeight: 100, 
-        cropWidth: 300, 
-        cropX: 0,
-        cropY: -1
-      ),
-      Divider(),
-      CroppedImage(
-        img: Image.network("https://i.picsum.photos/id/1024/1920/1280.jpg?hmac=-PIpG7j_fRwN8Qtfnsc3M8-kC3yb0XYOBfVzlPSuVII", width: 300, height: 300,),
-        cropHeight: 100, 
-        cropWidth: 300, 
-        cropX: 0,
-        cropY: 0
-      ),
-      Divider(),
-      CroppedImage(
-        img: Image.network("https://i.picsum.photos/id/1024/1920/1280.jpg?hmac=-PIpG7j_fRwN8Qtfnsc3M8-kC3yb0XYOBfVzlPSuVII", width: 300, height: 300,),
-        cropHeight: 100, 
-        cropWidth: 300, 
-        cropX: 0,
-        cropY: 1
-      ),
-    ]
-  ); */
 }
