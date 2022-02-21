@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:puzzle/puzzlemodel.dart';
@@ -36,7 +38,6 @@ class PuzzleTileWidget extends StatelessWidget{
         width: size - 4,
         color: color,
         child: child,
-        margin: const EdgeInsets.all(0),
         alignment: Alignment.center
       ),
     );
@@ -98,6 +99,7 @@ class PuzzleBoardWidgetState extends State<PuzzleBoardWidget>{
   }
 
   void moveToPosition(int i, int j){
+    if(i < 0 || j < 0 || i >= widget.board.size || j>= widget.board.size) return;
     widget.board.moveToPosition(i, j, (PuzzleTileMovementCallback callback){
       if(widget.onChange == null) return;
       HapticFeedback.selectionClick();
@@ -107,14 +109,14 @@ class PuzzleBoardWidgetState extends State<PuzzleBoardWidget>{
   }
 
   void moveInDirection(String direction){
-    for(int i = 0; i < widget.level - 1; i++){
+    //for(int i = 0; i < widget.level - 1; i++){
       widget.board.moveInDirection(direction, (PuzzleTileMovementCallback callback){
         if(widget.onChange == null) return;
         HapticFeedback.selectionClick();
         widget.onChange!(callback, widget.board);
+        update();
       });
-    }
-    update();
+    //}
   }
 
   void update(){
@@ -148,10 +150,10 @@ class PuzzleBoardWidgetState extends State<PuzzleBoardWidget>{
       autofocus: true,
       focusNode: FocusNode(),
       onKey: (e){
-        if(e.logicalKey == LogicalKeyboardKey.arrowUp) moveInDirection("down");
-        if(e.logicalKey == LogicalKeyboardKey.arrowDown) moveInDirection("up");
-        if(e.logicalKey == LogicalKeyboardKey.arrowLeft) moveInDirection("right");
-        if(e.logicalKey == LogicalKeyboardKey.arrowRight) moveInDirection("left");
+        if(e.isKeyPressed(LogicalKeyboardKey.arrowUp)) moveInDirection("down");
+        if(e.isKeyPressed(LogicalKeyboardKey.arrowDown)) moveInDirection("up");
+        if(e.isKeyPressed(LogicalKeyboardKey.arrowLeft)) moveInDirection("right");
+        if(e.isKeyPressed(LogicalKeyboardKey.arrowRight)) moveInDirection("left");
       },
       child: Stack(
         children: [
