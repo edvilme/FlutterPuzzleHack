@@ -198,14 +198,20 @@ class PuzzleBoard {
 	}
 
 	// Shuffle
-	void shuffle(int k){
+	void shuffle(int k, bool Function(List<List<PuzzleTile?>>)? f){
     Set<String> moves = {};
-		for (var i = 0; i < k; i++) {
+    int i = 0;
+
+		while(i < k || f?.call(tiles) == false ) {
       moves.add(
         getCurrentState().join(" ")
       );
 			moveInDirection(['up', 'down', 'left', 'right'][ Random().nextInt(4) ], (PuzzleTileMovementCallback c){});
+      i++;
     }
+
+
+
     moveCount = 0;
     shuffledMoves = moves.length;
 	}

@@ -121,7 +121,7 @@ class GyroLevelWidgetState extends State<GyroLevelWidget>{
   Widget build(BuildContext context){
     return MouseRegion(
       onHover: (event) {
-        if(isMouseInsideTiles || event.delta.distance < 4) return;
+        if(isMouseInsideTiles) return;
         if(defaultTargetPlatform != TargetPlatform.iOS && defaultTargetPlatform != TargetPlatform.android){
           setRotation(atan2(
             event.position.dy - MediaQuery.of(context).size.height/2,

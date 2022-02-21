@@ -50,6 +50,7 @@ class PuzzleBoardWidget extends StatefulWidget{
   late double size;
   late int level;
   late bool? shuffled;
+  late bool Function(List<List<PuzzleTile?>>)? shuffleGenerator;
   late Function tileGenerator;
   late Function tileDecorator;
 
@@ -64,6 +65,7 @@ class PuzzleBoardWidget extends StatefulWidget{
     required this.level, 
     required this.tileGenerator, 
     required this.tileDecorator,
+    this.shuffleGenerator, 
     this.onChange,
     this.onWin, 
     this.onLoose, 
@@ -71,7 +73,7 @@ class PuzzleBoardWidget extends StatefulWidget{
     this.shuffled,
   }) : super(key: key) {
     board = PuzzleBoard(size: level, tileGenerator: tileGenerator);
-    if(shuffled == true) board.shuffle(10*level*level);
+    if(shuffled == true) board.shuffle(10*level*level, shuffleGenerator);
   }
   @override
   PuzzleBoardWidgetState createState() => PuzzleBoardWidgetState();

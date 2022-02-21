@@ -7,6 +7,9 @@ import 'package:puzzle/puzzlewidget.dart';
 class Level extends StatefulWidget{
   late int level;
   late bool? shuffled;
+
+  late bool Function(List<List<PuzzleTile?>>)? shuffleGenerator;
+
   late Function tileGenerator;
   late Function tileDecorator;
 
@@ -28,6 +31,7 @@ class Level extends StatefulWidget{
     Key? key, 
     required this.level, 
     required this.shuffled,
+    this.shuffleGenerator,
     required this.onChange, 
     required this.tileDecorator, 
     required this.tileGenerator, 
@@ -57,6 +61,7 @@ class LevelState extends State<Level> {
     board = PuzzleBoardWidget(
       level: widget.level, 
       shuffled: widget.shuffled,
+      shuffleGenerator: widget.shuffleGenerator,
       tileGenerator: widget.tileGenerator, 
       tileDecorator: widget.tileDecorator,
       onChange: (PuzzleTileMovementCallback c, PuzzleBoard p){

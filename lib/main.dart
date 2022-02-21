@@ -10,6 +10,7 @@ import 'package:puzzle/levels/gyro.dart';
 import 'package:puzzle/levels/image.dart';
 import 'package:puzzle/levels/numbers.dart';
 import 'package:puzzle/levels/patterns.dart';
+import 'package:puzzle/levels/tictactoe.dart';
 import 'package:puzzle/levels/words.dart';
 import 'package:puzzle/puzzlemodel.dart';
 import 'package:puzzle/puzzlewidget.dart';
@@ -40,7 +41,8 @@ class GameState extends State<Game>{
     NumberLevelMedium,
     PatternsLevelEasy,
     ImageLevel,
-    GyroLevel
+    GyroLevel,
+    TicTacToeLevel
   ];
 
   late Widget currentLevel;
