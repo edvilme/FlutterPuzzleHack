@@ -8,7 +8,7 @@ class PuzzleTileWidget extends StatelessWidget{
 
   late PuzzleTile data;
   late Widget? child;
-  final double size;
+  late double size;
   late Color color;
   final Function onTap;
 
@@ -52,6 +52,7 @@ class PuzzleBoardWidget extends StatefulWidget{
   late bool? shuffled;
   late bool Function(List<List<PuzzleTile?>>)? shuffleGenerator;
   late Function tileGenerator;
+  late Function? emptyTileDecorator;
   late Function tileDecorator;
 
   late Function? onChange;
@@ -65,6 +66,7 @@ class PuzzleBoardWidget extends StatefulWidget{
     required this.level, 
     required this.tileGenerator, 
     required this.tileDecorator,
+    this.emptyTileDecorator,
     this.shuffleGenerator, 
     this.onChange,
     this.onWin, 
@@ -141,6 +143,7 @@ class PuzzleBoardWidgetState extends State<PuzzleBoardWidget>{
           ),
         );
         if(tile.type != 'empty') widget.tileDecorator(tileWidget.child);
+        if(tile.type == 'empty') widget.emptyTileDecorator?.call(tileWidget.child);
         return tileWidget;
       }).toList();
     });
@@ -152,10 +155,10 @@ class PuzzleBoardWidgetState extends State<PuzzleBoardWidget>{
       autofocus: true,
       focusNode: FocusNode(),
       onKey: (e){
-        if(e.isKeyPressed(LogicalKeyboardKey.arrowUp)) moveInDirection("down");
-        if(e.isKeyPressed(LogicalKeyboardKey.arrowDown)) moveInDirection("up");
-        if(e.isKeyPressed(LogicalKeyboardKey.arrowLeft)) moveInDirection("right");
-        if(e.isKeyPressed(LogicalKeyboardKey.arrowRight)) moveInDirection("left");
+        if(e.isKeyPressed(LogicalKeyboardKey.arrowUp)) return moveInDirection("down");
+        if(e.isKeyPressed(LogicalKeyboardKey.arrowDown)) return moveInDirection("up");
+        if(e.isKeyPressed(LogicalKeyboardKey.arrowLeft)) return moveInDirection("right");
+        if(e.isKeyPressed(LogicalKeyboardKey.arrowRight)) return moveInDirection("left");
       },
       child: Stack(
         children: [

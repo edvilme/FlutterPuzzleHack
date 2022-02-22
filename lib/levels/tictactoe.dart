@@ -50,7 +50,7 @@ Widget TicTacToeLevel({
     onChange: (PuzzleTileMovementCallback callback, PuzzleBoard board){
       if(ticTacToeWinner(board.tiles)) return "win";
     },
-    instructions: "Sort the numbers in order",
+    instructions: "Move the tiles to win the tic tac toe game",
     onNextLevel: (){
       onNextLevel!();
     },

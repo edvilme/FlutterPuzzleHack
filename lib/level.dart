@@ -11,6 +11,7 @@ class Level extends StatefulWidget{
   late bool Function(List<List<PuzzleTile?>>)? shuffleGenerator;
 
   late Function tileGenerator;
+  late Function? emptyTileDecorator;
   late Function tileDecorator;
 
   late Function onChange;
@@ -34,6 +35,7 @@ class Level extends StatefulWidget{
     this.shuffleGenerator,
     required this.onChange, 
     required this.tileDecorator, 
+    this.emptyTileDecorator,
     required this.tileGenerator, 
     // this.onLoose, 
     this.onReset,
@@ -64,6 +66,7 @@ class LevelState extends State<Level> {
       shuffleGenerator: widget.shuffleGenerator,
       tileGenerator: widget.tileGenerator, 
       tileDecorator: widget.tileDecorator,
+      emptyTileDecorator: widget.emptyTileDecorator,
       onChange: (PuzzleTileMovementCallback c, PuzzleBoard p){
         setState(() {
           score = (p.shuffledMoves - p.moveCount).toString();

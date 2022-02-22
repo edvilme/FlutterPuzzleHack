@@ -57,7 +57,7 @@ class PuzzleBoard {
 
 	PuzzleBoard({
     required this.size, 
-    this.tileGenerator 
+    this.tileGenerator
   }){
     int n = size;
 		tiles = List<List<PuzzleTile?>>.generate(n, (index) => List<PuzzleTile?>.generate(n, (index) => null));
@@ -199,21 +199,14 @@ class PuzzleBoard {
 
 	// Shuffle
 	void shuffle(int k, bool Function(List<List<PuzzleTile?>>)? f){
-    Set<String> moves = {};
     int i = 0;
-
 		while(i < k || f?.call(tiles) == false ) {
-      moves.add(
-        getCurrentState().join(" ")
-      );
 			moveInDirection(['up', 'down', 'left', 'right'][ Random().nextInt(4) ], (PuzzleTileMovementCallback c){});
       i++;
     }
 
-
-
     moveCount = 0;
-    shuffledMoves = moves.length;
+    shuffledMoves = 0;
 	}
 
   // Get state

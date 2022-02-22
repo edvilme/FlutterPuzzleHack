@@ -121,13 +121,12 @@ class GyroLevelWidgetState extends State<GyroLevelWidget>{
   Widget build(BuildContext context){
     return MouseRegion(
       onHover: (event) {
-        if(isMouseInsideTiles) return;
-        if(defaultTargetPlatform != TargetPlatform.iOS && defaultTargetPlatform != TargetPlatform.android){
-          setRotation(atan2(
-            event.position.dy - MediaQuery.of(context).size.height/2,
-            event.position.dx - MediaQuery.of(context).size.width/2
-          ));
-        }
+        if(isMouseInsideTiles || defaultTargetPlatform == TargetPlatform.iOS || defaultTargetPlatform == TargetPlatform.android) return;
+        double x = event.position.dx - MediaQuery.of(context).size.width/2;
+        double y = event.position.dy - MediaQuery.of(context).size.height/2;
+        double distance = sqrt(x*x + y*y);
+        if(distance < 250) return;
+        setRotation(atan2(y, x));
       },
       child: Level(
         key: Key("level-gyro-1".toString()),
@@ -139,18 +138,7 @@ class GyroLevelWidgetState extends State<GyroLevelWidget>{
         tileDecorator: (PuzzleTileWidget w){
           GyroIndicator gyro = GyroIndicator(width: 300, height: 300, color: Colors.amber);
           gyroTiles.add(gyro);
-          w.child = MouseRegion(
-            onEnter: (event){
-              setState(() {
-                isMouseInsideTiles = true;
-              });
-            },
-            onExit: (event){
-              setState(() {
-                isMouseInsideTiles = false;
-              });
-            },
-            child: Container(
+          w.child = Container(
               height: 100,
               width: 100,
               child: FittedBox(
@@ -162,8 +150,7 @@ class GyroLevelWidgetState extends State<GyroLevelWidget>{
                 ),
                 child: gyro,
               ),
-            ),
-          );
+            );
         },
         onChange: (PuzzleTileMovementCallback callback, PuzzleBoard board){
           bool isIncorrect = board.getTiles().any((element) => element.position.i != element.correctPosition.i || element.position.j != element.correctPosition.j);
