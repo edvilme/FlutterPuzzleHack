@@ -204,7 +204,6 @@ class PuzzleBoard {
 			moveInDirection(['up', 'down', 'left', 'right'][ Random().nextInt(4) ], (PuzzleTileMovementCallback c){});
       i++;
     }
-
     moveCount = 0;
     shuffledMoves = 0;
 	}

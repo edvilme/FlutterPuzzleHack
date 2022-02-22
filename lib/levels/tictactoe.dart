@@ -26,7 +26,7 @@ Widget TicTacToeLevel({
   Function? onReset,
 }){
   return Level(
-    key: Key("level-number-" + (counter++).toString()),
+    key: Key("level-tictactoe-" + (counter++).toString()),
     shuffled: true, 
     shuffleGenerator: (tiles){
       return !ticTacToeWinner(tiles);
@@ -34,10 +34,10 @@ Widget TicTacToeLevel({
     level: 3,
     tileGenerator: (PuzzleTile t){
       t.type = 'tile';
-      t.data = t.getID() < 4 ? 'O' : 'X';
+      t.data = t.correctPosition.i * 3 + t.correctPosition.j < 4 ? 'O' : 'X';
     },
     tileDecorator: (PuzzleTileWidget w){
-      w.color = w.data.getID() < 4 ? Colors.orange : Colors.purple;
+      w.color = w.data.correctPosition.i * 3 + w.data.correctPosition.j < 4 ? Colors.orange : Colors.purple;
       w.child = Text(
         w.data.data.toString(), 
         style: GoogleFonts.poiretOne(

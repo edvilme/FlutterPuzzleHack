@@ -121,7 +121,7 @@ class GyroLevelWidgetState extends State<GyroLevelWidget>{
   Widget build(BuildContext context){
     return MouseRegion(
       onHover: (event) {
-        if(isMouseInsideTiles || defaultTargetPlatform == TargetPlatform.iOS || defaultTargetPlatform == TargetPlatform.android) return;
+        if(isMouseInsideTiles) return;
         double x = event.position.dx - MediaQuery.of(context).size.width/2;
         double y = event.position.dy - MediaQuery.of(context).size.height/2;
         double distance = sqrt(x*x + y*y);
