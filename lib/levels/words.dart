@@ -53,7 +53,6 @@ Widget WordLevel({
           w.child = Text(
             w.data.data, 
             style: GoogleFonts.poiretOne(
-              color: Colors.white,
               decoration: TextDecoration.none, 
               fontSize: w.size * 0.5
             ),

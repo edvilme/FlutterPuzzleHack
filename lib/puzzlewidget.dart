@@ -136,7 +136,7 @@ class PuzzleBoardWidgetState extends State<PuzzleBoardWidget>{
             data: tile,
             child: Text(tile.data, style: const TextStyle(decoration: TextDecoration.none),),
             size: widget.size / widget.board.size,
-            color: tile.type == 'empty' ? Colors.transparent : Colors.black,
+            color: tile.type == 'empty' ? Colors.transparent : Colors.grey.shade700,
             onTap: (){
               moveToPosition(tile.position.i, tile.position.j);
             },

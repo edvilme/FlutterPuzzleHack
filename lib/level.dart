@@ -42,8 +42,8 @@ class Level extends StatefulWidget{
     this.onScore, 
     this.onNextLevel, 
     this.onPause,
-    this.backgroundColor = Colors.white,
-    this.foregroundColor = Colors.black87, 
+    this.backgroundColor = Colors.black,
+    this.foregroundColor = Colors.white, 
     this.instructions = ""
   }) : super(key: key);
 
@@ -74,7 +74,7 @@ class LevelState extends State<Level> {
         String? result = widget.onChange(c, p);
         if(result == null) return;
         if(result == "win") board.win();
-        if(result == "loose") board.win();
+        if(result == "loose") board.loose();
       },
       onWin: (){
         setState(() {
@@ -84,7 +84,7 @@ class LevelState extends State<Level> {
       },
       onLoose: (){
         setState(() {
-          score = "You loose";
+          state = "loose";
         });
         // widget.onLoose!();
       },
@@ -168,7 +168,11 @@ class LevelState extends State<Level> {
         },
       );
     } else if (state == "loose"){
-      return LevelLoose();
+      return LevelLoose(
+        onReset: (){
+          widget.onReset!();
+        },
+      );
     }
     return Container();
   }
@@ -293,14 +297,56 @@ class LevelWin extends StatelessWidget{
   }
 }
 
+
 class LevelLoose extends StatelessWidget{
-  LevelLoose({Key? key}) : super(key: key);
+  Function? onReset;
+  LevelLoose({
+    Key? key, 
+    this.onReset
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context){
     return BackdropFilter(
       filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
-      child: Text("You loose"),
+      child: Container(
+        width: 450,
+        color: Colors.white54, 
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              "You Loose!",
+              style: TextStyle(
+                color: Colors.black, 
+                decoration: TextDecoration.none
+              ),
+            ), 
+            GestureDetector(
+              onTap: (){
+                onReset!();
+              },
+              child: Container(
+                margin: EdgeInsets.all(8),
+                padding: EdgeInsets.all(8),
+                color: Colors.black,
+                height: 40,
+                width: 300,
+                child: const Text(
+                  "Try again", 
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 20,
+                    decoration: TextDecoration.none,
+                    color: Colors.white, 
+                    fontWeight: FontWeight.w300
+                  ),
+                ),
+              ),
+            )
+          ],
+        ),
+      )
     );
   }
 }

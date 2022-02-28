@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/io_client.dart';
 import 'package:puzzle/level.dart';
+import 'package:puzzle/levels/food.dart';
 import 'package:puzzle/levels/gyro.dart';
 import 'package:puzzle/levels/image.dart';
 import 'package:puzzle/levels/numbers.dart';
@@ -42,7 +43,8 @@ class GameState extends State<Game>{
     PatternsLevelEasy,
     ImageLevel,
     GyroLevel,
-    TicTacToeLevel
+    TicTacToeLevel,
+    FoodLevel
   ];
 
   late Widget currentLevel;
