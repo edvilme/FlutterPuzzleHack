@@ -1,4 +1,4 @@
-- name: GitHub Pages action
+- name: Pages
   uses: peaceiris/actions-gh-pages@v3.7.3
   with:
     github_token: ${{ secrets.GITHUB_TOKEN }}
