@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:puzzle/puzzlemodel.dart';
 import 'package:puzzle/puzzlewidget.dart';
+import 'package:rive/rive.dart';
 
 class Level extends StatefulWidget{
   late int level;
@@ -261,7 +262,11 @@ class LevelWin extends StatelessWidget{
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
+            Container(
+              child: const RiveAnimation.network("https://public.rive.app/community/runtime-files/2131-4192-coin.riv"),
+              height: 450,
+            ),
+            const Text(
               "You win!",
               style: TextStyle(
                 color: Colors.black, 

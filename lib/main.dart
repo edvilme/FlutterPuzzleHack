@@ -19,6 +19,7 @@ import 'package:puzzle/puzzlewidget.dart';
 void main(){
   runApp(
     MaterialApp(
+      title: "!Puzzle",
       debugShowCheckedModeBanner: false,
       home: Container(
         color: Colors.amber,

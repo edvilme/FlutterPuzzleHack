@@ -4,26 +4,23 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:puzzle/level.dart';
 import 'package:puzzle/puzzlemodel.dart';
 import 'package:puzzle/puzzlewidget.dart';
+import 'package:rive/rive.dart';
 
 Widget MonsterTile(){
-  return Align(
-    alignment: Alignment.center,
-    child: Container(
-      margin: EdgeInsets.all(16),
-      color: Colors.amber,
-    ),
+  return Container(
+    margin: EdgeInsets.all(4),
+    child: ClipOval(
+      child: RiveAnimation.network('https://public.rive.app/community/runtime-files/623-1217-happy-monster.riv'),
+    )
+  );
+}
+Widget FoodTile(){
+  return Container(
+    // child: RiveAnimation.network('https://public.rive.app/community/runtime-files/238-457-ice-cream.riv'),
+    child: RiveAnimation.network('https://public.rive.app/community/runtime-files/271-535-lollipop.riv'),
   );
 }
 
-Widget FoodTile(){
-  return Align(
-    alignment: Alignment.center,
-    child: Container(
-      margin: EdgeInsets.all(16),
-      color: Colors.white,
-    ),
-  );
-}
 
 Widget PoisonTile(){
   return Align(
@@ -41,7 +38,7 @@ Widget FoodLevel({
   Function? onNextLevel,
   Function? onReset,
 }){
-  int foodCount = Random().nextInt(20);
+  int foodCount = Random().nextInt(18) + 2;
   int poisonCount = Random().nextInt(3);
   return Level(
     key: Key("food-number-" + (counter++).toString()),
@@ -57,6 +54,7 @@ Widget FoodLevel({
       w.child = MonsterTile();
     },
     tileDecorator: (PuzzleTileWidget w){
+      w.color = Colors.transparent;
       // Food
       if(w.data.type == 'food'){
         w.child = FoodTile();
@@ -65,6 +63,7 @@ Widget FoodLevel({
         w.child = PoisonTile();
       }
       if(w.data.type == 'tile'){
+        w.color = Color.fromARGB(255, 196, 186, 186);
         w.child = Container();
       }
     },
@@ -81,7 +80,7 @@ Widget FoodLevel({
       // Win when no food left
       if(foodCount == 0) return "win";
     },
-    instructions: "Move the yellow tile to eat all the white tiles. Be careful to avoid red tiles",
+    instructions: "Help the character eat all the candy. Avoid the red squares.",
     onNextLevel: (){
       onNextLevel!();
     },
