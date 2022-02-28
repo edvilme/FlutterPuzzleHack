@@ -54,7 +54,8 @@ Widget WordLevel({
             w.data.data, 
             style: GoogleFonts.poiretOne(
               decoration: TextDecoration.none, 
-              fontSize: w.size * 0.5
+              fontSize: w.size * 0.5,
+              color: Colors.white
             ),
           );
         },

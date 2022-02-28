@@ -52,9 +52,6 @@ class GameState extends State<Game>{
   @override
   void initState() {
     super.initState();
-    /* if(defaultTargetPlatform == TargetPlatform.android || defaultTargetPlatform == TargetPlatform.iOS) {
-      ALL_LEVELS.add(GyroLevel);
-    } */
     currentLevelIndex =  Random().nextInt(ALL_LEVELS.length);
     currentLevel = ALL_LEVELS[currentLevelIndex](
       onNextLevel: (){
