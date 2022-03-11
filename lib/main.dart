@@ -1,4 +1,11 @@
-
+/**
+ * Submission for #FlutterPuzzleHack
+ * Dedicated to Ana, for all her extraordinary support in this process. 
+ * For helping me test early builds, proposing ideas and encouraging me
+ * to contiunue development. 
+ * 
+ * Made with ❤️ by @edvilme.
+ */
 import 'dart:math';
 import 'dart:io' as IO;
 import 'package:flutter/foundation.dart';
@@ -9,6 +16,7 @@ import 'package:puzzle/level.dart';
 import 'package:puzzle/levels/food.dart';
 import 'package:puzzle/levels/gyro.dart';
 import 'package:puzzle/levels/image.dart';
+
 import 'package:puzzle/levels/numbers.dart';
 import 'package:puzzle/levels/patterns.dart';
 import 'package:puzzle/levels/tictactoe.dart';
