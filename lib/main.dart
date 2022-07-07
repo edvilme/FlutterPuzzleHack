@@ -11,6 +11,7 @@ import 'dart:io' as IO;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:http/io_client.dart';
 import 'package:puzzle/level.dart';
 import 'package:puzzle/levels/food.dart';
@@ -25,14 +26,13 @@ import 'package:puzzle/puzzlemodel.dart';
 import 'package:puzzle/puzzlewidget.dart';
 
 void main(){
+  WidgetsFlutterBinding.ensureInitialized();
+  MobileAds.instance.initialize();
   runApp(
-    MaterialApp(
+    const MaterialApp(
       title: "!Puzzle",
       debugShowCheckedModeBanner: false,
-      home: Container(
-        color: Colors.amber,
-        child: Game()
-      )
+      home: Game()
     )
   );
 }
@@ -58,9 +58,22 @@ class GameState extends State<Game>{
 
   late Widget currentLevel;
   late int currentLevelIndex;
+
+  final BannerAd adBanner = BannerAd(
+    // INFO: https://developers.google.com/admob/ios/data-disclosure
+    // TODO: Replace with app ID
+    //adUnitId: "ca-app-pub-3940256099942544/2934735716",
+    adUnitId: 'ca-app-pub-9565405994206865/9496086530',
+    size: AdSize.fluid,
+    request: AdRequest(),
+    listener: BannerAdListener(),
+  );
+
+
   @override
   void initState() {
     super.initState();
+    adBanner.load();
     currentLevelIndex =  Random().nextInt(ALL_LEVELS.length);
     currentLevel = ALL_LEVELS[currentLevelIndex](
       onNextLevel: (){
@@ -88,6 +101,18 @@ class GameState extends State<Game>{
 
   @override
   Widget build(BuildContext context){
-    return currentLevel;
+    return SafeArea(
+      child: Column(
+        children: [
+          Expanded(child: currentLevel), 
+          Container(
+            height: 40,
+            color: Colors.grey.shade900,
+            child: AdWidget(ad: adBanner,),
+            alignment: Alignment.center,
+          )
+        ],
+      ),
+    );
   }
 }
